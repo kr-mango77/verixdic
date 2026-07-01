@@ -1,0 +1,1056 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Verix 사전</title>
+  <style>
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+#popupContainer {
+    position: fixed;
+
+    bottom: 20px;
+    left: 50%;
+
+    transform: translateX(-50%);
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 10px;
+
+    z-index: 9999;
+}
+
+#deleteDetail {
+
+    position: absolute;
+
+    top: 10px;
+    right: 70px;
+
+    border: none;
+
+    background: transparent;
+
+    color: white;
+
+    font-size: 24px;
+
+    cursor: pointer;
+}
+
+.popup {
+    background: #333;
+    color: white;
+
+    padding: 12px 20px;
+
+    border-radius: 10px;
+
+    animation: popupAnim 2s forwards;
+}
+
+@keyframes popupAnim {
+
+    0% {
+        opacity: 0;
+        transform: translateY(50px);
+    }
+
+    15% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    85% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    100% {
+        opacity: 0;
+        transform: translateY(50px);
+    }
+
+}
+
+#wordList {
+    text-align: center;
+}
+
+.wordItem {
+    margin: 8px;
+}
+
+.wordItem {
+
+    width: 300px;
+
+    margin: 8px auto;
+
+    padding: 10px;
+
+    border: 1px solid rgb(0, 0, 0);
+
+    border-radius: 10px;
+
+    text-align: left;
+}
+
+#wordDetail {
+
+    position: fixed;
+
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    height: 250px;
+
+    background: rgba(0, 0, 0, 0.7);
+
+    border-top: 2px solid #ccc;
+
+    backdrop-filter: blur(0px);
+
+    padding: 15px;
+
+    overflow-y: auto;
+
+    display: none;
+}
+
+#closeDetail {
+
+    position: absolute;
+
+    top: 10px;
+    right: 10px;
+
+    border: none;
+
+    background: rgba(255,128,128,0.5);
+
+    font-size: 24px;
+
+    cursor: pointer;
+
+}
+#settingsIcon {
+    position: fixed;
+    top: 10px;
+    left: 10px;
+
+    font-size: 24px;
+    cursor: pointer;
+
+    z-index: 10000;
+}
+#adminModal {
+    position: fixed;
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 100%;
+
+    background: rgba(0,0,0,0.5);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    z-index: 9999;
+}
+
+#adminBox {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+}
+#closeDetail, #editDetail {
+    position: absolute;
+    top: 10px;
+
+    border: none;
+    background: transparent;
+
+    font-size: 24px;
+    cursor: pointer;
+    color: white;
+}
+
+#closeDetail {
+    right: 10px;
+}
+
+#editDetail {
+    right: 40px;
+}
+#editModal {
+    position: fixed;
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 100%;
+
+    background: rgba(0,0,0,0.6);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    z-index: 10000;
+}
+
+#editBox {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+
+    width: 80%;
+    max-width: 400px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+#editBox input {
+    padding: 8px;
+}
+
+#addWordBtn {
+    position: fixed;
+
+    top: 10px;
+    right: 10px;
+
+    width: 40px;
+    height: 40px;
+
+    border: none;
+    border-radius: 50%;
+
+    font-size: 24px;
+
+    cursor: pointer;
+
+    z-index: 10000;
+}
+
+#addModal {
+
+    position: fixed;
+
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 100%;
+
+    background: rgba(0,0,0,0.5);
+
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    z-index: 10001;
+}
+
+#addBox {
+
+    background: white;
+
+    padding: 20px;
+
+    border-radius: 10px;
+
+    width: 80%;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 10px;
+}
+
+#deleteModal {
+
+    position: fixed;
+
+    top: 0;
+    left: 0;
+
+    width: 100vw;
+    height: 100vh;
+
+    background: rgba(0, 0, 0, 0.5);
+
+    display: none;
+
+    justify-content: center;
+    align-items: center;
+
+    z-index: 20000;
+}
+
+#deleteBox {
+
+    background: white;
+
+    width: 80%;
+    max-width: 350px;
+
+    padding: 20px;
+
+    border-radius: 15px;
+
+    text-align: center;
+
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+}
+
+#deleteBox button {
+
+    margin: 5px;
+
+    padding: 10px 15px;
+
+    border: none;
+
+    border-radius: 8px;
+
+    cursor: pointer;
+}
+
+#settingsModal {
+
+    position: fixed;
+
+    top: 0;
+    left: 0;
+
+    width: 100vw;
+    height: 100vh;
+
+    background: rgba(0,0,0,0.5);
+
+    display: none;
+
+    justify-content: center;
+    align-items: center;
+
+    z-index: 10000;
+}
+
+#settingsBox {
+
+    background: white;
+
+    width: 80%;
+    max-width: 350px;
+
+    padding: 20px;
+
+    border-radius: 15px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 10px;
+}
+
+</style>
+</head>
+<body>
+    <div id="popupContainer"></div>
+  <h1>Verix 사전</h1>
+  <div id="adminModal" style="display:none;">
+    <div id="adminBox">
+        <h3>관리자를 인증하세요</h3>
+        <input type="password" id="adminInput" placeholder="관리자 비밀번호">
+        <button id="adminSubmit">확인</button>
+        <button id="adminClose">닫기</button>
+    </div>
+</div>
+
+<div id="loginBox">
+    <h3>비밀번호를 입력해 주세요.</h3>
+    <div>
+        <input type="password" id="passwordInput" placeholder="비밀번호">
+        <button id="loginButton">입장</button>
+    </div>
+    <button id="hint" hidden=true onclick="hintt()">힌트</button>
+</div>
+
+<div id="dictionary" style="display:none;">
+    <div id="settingsIcon">⚙️</div>
+    <button id="addWordBtn">＋</button>
+
+    <input type="text" id="searchInput" placeholder="단어 입력">
+    <button id="searchButton">검색</button>
+
+    <div id="wordList"></div>
+
+    <hr>
+
+<div id="wordDetail">
+
+    단어를 선택하세요.
+
+</div>
+
+<div id="editModal" style="display:none;">
+    <div id="editBox">
+
+        <h3>단어 수정</h3>
+        <input id="editWord" placeholder="단어">
+        <input id="editMeaning" placeholder="뜻">
+        <input id="editPart" placeholder="품사">
+        <input id="editNote" placeholder="비고">
+        <input id="editExample" placeholder="예문">
+        <input id="editExampleMeaning" placeholder="예문 뜻">
+
+        <button id="saveEdit">저장</button>
+        <button id="cancelEdit">취소</button>
+
+    </div>
+</div>
+
+<div id="addModal" style="display:none;">
+
+    <div id="addBox">
+
+        <h3>단어 추가</h3>
+
+        <input id="newWord" placeholder="단어">
+
+        <input id="newMeaning" placeholder="뜻">
+
+        <input id="newPart" placeholder="품사">
+
+        <input id="newNote" placeholder="비고">
+
+        <input id="newExample" placeholder="예문">
+
+        <input id="newExampleMeaning" placeholder="예문 뜻">
+
+        <button id="saveNewWord">추가</button>
+
+        <button id="cancelNewWord">취소</button>
+
+    </div>
+
+</div>
+
+<div id="settingsModal" style="display:none;">
+
+    <div id="settingsBox">
+
+        <h3>설정 변경</h3>
+
+        <input id="settingPassword" placeholder="사전 비밀번호">
+
+        <input id="settingHint" placeholder="힌트">
+
+        <input id="settingAdmin" placeholder="관리자 비밀번호">
+
+        <button id="saveSettings">저장</button>
+
+        <button id="closeSettings">취소</button>
+
+    </div>
+
+</div>
+
+<div id="deleteModal" style="display:none;">
+
+    <div id="deleteBox">
+
+        <h3>단어 삭제</h3>
+
+        <p id="deleteText"></p>
+
+        <button id="confirmDelete">삭제</button>
+        <button id="cancelDelete">취소</button>
+
+    </div>
+
+</div>
+
+    <div id="result"></div>
+
+</div>
+  <script type="module">
+
+let isAdmin = false;
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-app.js";
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-analytics.js";
+  import {
+  getDatabase,
+  ref,
+  get,
+  update,
+  remove
+  } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-database.js";
+  // TODO: Add SDKs for Firebase products that you want to use
+  // https://firebase.google.com/docs/web/setup#available-libraries
+
+  // Your web app's Firebase configuration
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  const firebaseConfig = {
+    apiKey: "AIzaSyAylmSXWreYSdrHtSokpC_owptpPzP8vGM",
+    authDomain: "verixdic.firebaseapp.com",
+    projectId: "verixdic",
+    storageBucket: "verixdic.firebasestorage.app",
+    messagingSenderId: "1020251702212",
+    appId: "1:1020251702212:web:c873df6181a889b1851a91",
+    measurementId: "G-617M1V52JB",
+    databaseURL:"https://verixdic-default-rtdb.asia-southeast1.firebasedatabase.app"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
+
+  const db = getDatabase(app);
+
+  const snapshot = await get(ref(db));
+  const data = snapshot.val();
+
+const words = data.words;
+const password = data.set.password;
+
+let editingWord = null;
+
+document.getElementById("loginButton").addEventListener("click", () => {
+
+    const input =
+        document.getElementById("passwordInput").value;
+
+    if (input === String(password)) {
+
+        document.getElementById("loginBox").style.display =
+            "none";
+
+        document.getElementById("dictionary").style.display =
+            "block";
+
+    } else {
+
+        popup('비밀번호가 일치하지 않습니다', 'red');
+        document.getElementById("hint").hidden = false;
+
+    }
+});
+
+function popup(message, color = "#333") {
+
+    const box = document.createElement("div");
+
+    box.className = "popup";
+
+    box.textContent = message;
+
+    box.style.backgroundColor = color;
+
+    document
+        .getElementById("popupContainer")
+        .appendChild(box);
+
+    setTimeout(() => {
+        box.remove();
+    }, 2000);
+}
+
+for (const word in words) {
+
+    const div = document.createElement("div");
+
+    div.className = "wordItem";
+
+    div.innerHTML =
+        `<b>${word}</b> | ${words[word][1]} | ${words[word][0]}`;
+
+    div.addEventListener("click", () => {
+
+        showWord(word);
+
+    });
+
+    wordList.appendChild(div);
+}
+
+function showWord(word) {
+
+    const data1 = words[word];
+    const detail = document.getElementById("wordDetail");
+
+    detail.style.display = "block";
+
+    detail.innerHTML = `
+        <button id="closeDetail" style="color:white;">✕</button>
+        <button id="editDetail">✎</button>
+        <button id="deleteDetail">🗑</button>
+
+        <h2 style="color:white;">${word}</h2>
+
+        <p style="color:white;">뜻: ${data1[0]}</p>
+        <p style="color:white;">품사: ${data1[1]}</p>
+        <p style="color:white;">비고: ${data1[2]}</p>
+        <p style="color:white;">예문: ${data1[3]}</p>
+        <p style="color:white;">예문 뜻: ${data1[4]}</p>
+    `;
+
+    // ✔ 닫기
+    document.getElementById("closeDetail")
+        .addEventListener("click", () => {
+            detail.style.display = "none";
+        });
+
+    // ✔ 수정
+    document.getElementById("editDetail")
+.addEventListener("click", () => {
+
+    if (!isAdmin) {
+        popup("관리자만 수정 가능", "red");
+        return;
+    }
+
+    editingWord = word;
+    const data1 = words[word];
+
+    document.getElementById("editWord").value = "";
+
+document.getElementById("editMeaning").value = "";
+document.getElementById("editPart").value = "";
+document.getElementById("editNote").value = "";
+document.getElementById("editExample").value = "";
+document.getElementById("editExampleMeaning").value = "";
+
+document.getElementById("editWord").placeholder = word;
+document.getElementById("editMeaning").placeholder = data1[0];
+document.getElementById("editPart").placeholder = data1[1];
+document.getElementById("editNote").placeholder = data1[2];
+document.getElementById("editExample").placeholder = data1[3];
+document.getElementById("editExampleMeaning").placeholder = data1[4];
+
+    document.getElementById("editModal").style.display = "flex";
+});
+
+document.getElementById("deleteDetail")
+.addEventListener("click", () => {
+
+    if (!isAdmin) {
+        popup("관리자만 삭제 가능", "red");
+        return;
+    }
+
+    document.getElementById("deleteText")
+        .textContent = `"${word}" 단어를 삭제할까요?`;
+
+    document.getElementById("deleteModal")
+        .style.display = "flex";
+
+    window.wordToDelete = word;
+});
+
+document.getElementById("cancelDelete")
+.addEventListener("click", () => {
+
+    popup("삭제 취소됨", 'red');
+
+    document.getElementById("deleteModal")
+        .style.display = "none";
+});
+}
+
+document.getElementById("confirmDelete")
+.addEventListener("click", async () => {
+
+    const word = window.wordToDelete;
+
+    delete words[word];
+
+    await remove(
+        ref(db, "words/" + word)
+    );
+
+    popup("삭제 완료", "green");
+
+    document.getElementById("deleteModal")
+        .style.display = "none";
+
+    document.getElementById("wordDetail")
+        .style.display = "none";
+
+    renderWords();
+});
+
+document.getElementById("addWordBtn")
+.addEventListener("click", () => {
+
+    if (!isAdmin) {
+
+        popup("관리자만 추가 가능", "red");
+
+        return;
+    }
+
+    document.getElementById("addModal")
+        .style.display = "flex";
+});
+
+document.getElementById("cancelNewWord")
+.addEventListener("click", () => {
+
+    document.getElementById("addModal")
+        .style.display = "none";
+});
+
+document.getElementById("saveNewWord")
+.addEventListener("click", async () => {
+
+    const word =
+        document.getElementById("newWord")
+        .value
+        .trim();
+
+    if (!word) {
+
+        popup("단어를 입력하세요", "red");
+
+        return;
+    }
+
+    if (words[word]) {
+
+        popup("이미 존재하는 단어입니다", "red");
+
+        return;
+    }
+
+    const data = [
+
+        document.getElementById("newMeaning").value,
+
+        document.getElementById("newPart").value,
+
+        document.getElementById("newNote").value,
+
+        document.getElementById("newExample").value,
+
+        document.getElementById("newExampleMeaning").value
+
+    ];
+
+    words[word] = data;
+
+    await update(
+        ref(db, "words"),
+        {
+            [word]: data
+        }
+    );
+
+    popup("단어 추가 완료", "green");
+
+    document.getElementById("addModal")
+        .style.display = "none";
+
+    if (typeof renderWords === "function") {
+        renderWords();
+    }
+});
+
+document.getElementById("saveEdit")
+.addEventListener("click", async () => {
+
+    const oldData = words[editingWord];
+
+    const newWord =
+        document.getElementById("editWord").value.trim()
+        || editingWord;
+
+    const newData = [
+
+        document.getElementById("editMeaning").value.trim()
+            || oldData[0],
+
+        document.getElementById("editPart").value.trim()
+            || oldData[1],
+
+        document.getElementById("editNote").value.trim()
+            || oldData[2],
+
+        document.getElementById("editExample").value.trim()
+            || oldData[3],
+
+        document.getElementById("editExampleMeaning").value.trim()
+            || oldData[4]
+    ];
+
+    // 키값 변경 안 함
+    if (newWord === editingWord) {
+
+        words[editingWord] = newData;
+
+        await update(ref(db, "words"), {
+            [editingWord]: newData
+        });
+
+    }
+
+    // 키값 변경
+    else {
+
+        delete words[editingWord];
+
+        words[newWord] = newData;
+
+        await update(ref(db, "words"), {
+            [newWord]: newData
+        });
+
+        await remove(
+            ref(db, "words/" + editingWord)
+        );
+
+        editingWord = newWord;
+    }
+
+    popup("수정 완료", "green");
+
+    document.getElementById("editModal")
+        .style.display = "none";
+
+    renderWords();
+    showWord(editingWord);
+
+});
+
+document.getElementById("cancelEdit")
+.addEventListener("click", () => {
+
+    popup("수정 취소됨", 'red');
+    document.getElementById("editModal").style.display = "none";
+
+});
+
+function renderWords(list = Object.keys(words)) {
+
+    const wordList =
+        document.getElementById("wordList");
+
+    wordList.innerHTML = "";
+
+    list.forEach(word => {
+
+        const div = document.createElement("div");
+
+        div.className = "wordItem";
+
+        div.innerHTML =
+            `<b>${word}</b> | ${words[word][1]} | ${words[word][0]}`;
+
+        div.addEventListener("click", () => {
+            showWord(word);
+        });
+
+        wordList.appendChild(div);
+    });
+}
+
+document.getElementById("searchButton")
+.addEventListener("click", () => {
+
+    const keyword =
+        document.getElementById("searchInput")
+        .value
+        .trim()
+        .toLowerCase();
+
+    const wordList =
+        document.getElementById("wordList");
+
+    wordList.innerHTML = "";
+
+    let resultKeys = Object.keys(words);
+
+    // 👉 검색어가 있을 때만 필터링
+    if (keyword) {
+
+        resultKeys = resultKeys.filter(word => {
+
+            const meaning = String(words[word][0]).toLowerCase();
+            const w = word.toLowerCase();
+
+            return (
+                w.includes(keyword) ||
+                meaning.includes(keyword)
+            );
+        });
+    }
+
+    if (resultKeys.length === 0) {
+        popup("검색 결과가 없습니다.", "red");
+        return;
+    }
+
+    resultKeys.forEach(word => {
+
+        const div = document.createElement("div");
+
+        div.className = "wordItem";
+
+        div.innerHTML =
+            `<b>${word}</b> | ${words[word][1]} | ${words[word][0]}`;
+
+        div.addEventListener("click", () => {
+            showWord(word);
+        });
+
+        wordList.appendChild(div);
+    });
+
+});
+
+document.getElementById("settingsIcon")
+.addEventListener("click", () => {
+
+    if (!isAdmin) {
+        document.getElementById("adminModal")
+            .style.display = "flex";
+        return;
+    }
+
+    document.getElementById("settingPassword").value = "";
+    document.getElementById("settingHint").value = "";
+    document.getElementById("settingAdmin").value = "";
+
+    document.getElementById("settingPassword")
+        .placeholder = data.set.password;
+
+    document.getElementById("settingHint")
+        .placeholder = data.set.hint;
+
+    document.getElementById("settingAdmin")
+        .placeholder = data.set.admin;
+
+    document.getElementById("settingsModal")
+        .style.display = "flex";
+});
+
+document.getElementById("adminSubmit")
+.addEventListener("click", () => {
+
+    const input =
+        document.getElementById("adminInput").value;
+
+    if (input === String(data.set.admin)) {
+
+        isAdmin = true;
+
+        popup("관리자 인증 완료", "green");
+
+        document.getElementById("adminModal")
+    .style.display = "none";
+
+const settingsBtn =
+    document.getElementById("settingsIcon");
+
+settingsBtn.textContent = "🛠️";
+
+    } else {
+        popup("비밀번호가 틀렸습니다", "red");
+    }
+
+});
+
+document.getElementById("adminClose")
+.addEventListener("click", () => {
+
+    document.getElementById("adminModal")
+        .style.display = "none";
+
+});
+
+window.hintt = function() {
+    popup('힌트 : '+data.set.hint, 'green');
+}
+
+document.getElementById("saveSettings")
+.addEventListener("click", async () => {
+
+    const updates = {};
+
+    const newPassword =
+        document.getElementById("settingPassword")
+        .value.trim();
+
+    const newHint =
+        document.getElementById("settingHint")
+        .value.trim();
+
+    const newAdmin =
+        document.getElementById("settingAdmin")
+        .value.trim();
+
+    if (newPassword)
+        updates.password = newPassword;
+
+    if (newHint)
+        updates.hint = newHint;
+
+    if (newAdmin)
+        updates.admin = newAdmin;
+
+    if (Object.keys(updates).length === 0) {
+
+        popup("변경된 내용이 없습니다", "red");
+
+        return;
+    }
+
+    await update(
+        ref(db, "set"),
+        updates
+    );
+
+    if (newPassword)
+        data.set.password = newPassword;
+
+    if (newHint)
+        data.set.hint = newHint;
+
+    if (newAdmin)
+        data.set.admin = newAdmin;
+
+    popup("설정 저장 완료", "green");
+
+    document.getElementById("settingsModal")
+        .style.display = "none";
+});
+
+document.getElementById("closeSettings")
+.addEventListener("click", () => {
+
+    popup('저장 취소됨', 'red')
+
+    document.getElementById("settingsModal")
+        .style.display = "none";
+});
+</script>
+</body>
+</html>
